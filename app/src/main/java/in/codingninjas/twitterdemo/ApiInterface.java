@@ -22,5 +22,7 @@ public interface ApiInterface {
     //Call<ArrayList<Home>> getUserTimeline(@Header("Authorization") String header);
     @GET("trends/place.json")
     Call<ArrayList<Home>> getUserTrends(@Query("id") String id);
+    @GET("users/show.json")
+    Call<Profile> getUserProfile(@Query("screen_name") String screen_name);
 }
 //user_id=2956103107

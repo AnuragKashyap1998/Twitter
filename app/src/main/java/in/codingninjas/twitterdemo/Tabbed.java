@@ -162,6 +162,8 @@ public class Tabbed extends AppCompatActivity implements NavigationView.OnNaviga
         } else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_manage) {
+            Intent i=new Intent(Tabbed.this,UserProfile.class);
+            startActivity(i);
 
         } else if (id == R.id.nav_share) {
 
@@ -209,12 +211,19 @@ public class Tabbed extends AppCompatActivity implements NavigationView.OnNaviga
                 final UserTimeline userTimeline = new UserTimeline.Builder()
                         .screenName(session.getUserName())
                         .build();
-                final TweetTimelineListAdapter adapter = new TweetTimelineListAdapter.Builder(getActivity())
-                        .setTimeline(userTimeline)
-                        .build();
+                CustomAdapter.OnTweetClickListener listener=new CustomAdapter.OnTweetClickListener()
+                {
+                    @Override
+                    public void onTweetClicked(int position, Tweet tweet) {
+                        Intent i=new Intent(getContext(),TweetView.class);
+                        i.putExtra("id",tweet.id);
+                        startActivity(i);
+                    }
+                };
+                CustomAdapter adapteruse=new CustomAdapter(getContext(),userTimeline,listener);
 
-                listview.setAdapter(adapter);
-                adapter.notifyDataSetChanged();
+                listview.setAdapter(adapteruse);
+                adapteruse.notifyDataSetChanged();
 
                 return rootView;
 
@@ -255,25 +264,23 @@ public class Tabbed extends AppCompatActivity implements NavigationView.OnNaviga
                         {
                             use.add(result.data.get(i));
                         }
-                        TweetTimelineListAdapter adapter = new TweetTimelineListAdapter.Builder(getContext())
-                        .setTimeline(homeTimeline)
-                        .build();
-                        listview.setAdapter(adapter);
-                        adapter.notifyDataSetChanged();
+                        CustomAdapter.OnTweetClickListener listener=new CustomAdapter.OnTweetClickListener()
+                        {
+                            @Override
+                            public void onTweetClicked(int position, Tweet tweet) {
+                                Intent i=new Intent(getContext(),TweetView.class);
+                                i.putExtra("id",tweet.id);
+                                startActivity(i);
+                            }
+                        };
+                        CustomAdapter adapteruse=new CustomAdapter(getContext(),homeTimeline,listener);
+                        listview.setAdapter(adapteruse);
+                        adapteruse.notifyDataSetChanged();
                     }
 
                     @Override
                     public void failure(TwitterException exception) {
 
-                    }
-                });
-                listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            Tweet tweet=use.get(position);
-                            Intent i=new Intent(getContext(),TweetViewActivity.class);
-                            i.putExtra("id",tweet.id);
-                            startActivity(i);
                     }
                 });
                 return rootView;

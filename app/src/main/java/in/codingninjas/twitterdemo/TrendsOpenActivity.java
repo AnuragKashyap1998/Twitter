@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ListView;
 
+import com.twitter.sdk.android.core.models.Tweet;
 import com.twitter.sdk.android.tweetui.BasicTimelineFilter;
 import com.twitter.sdk.android.tweetui.FilterValues;
 import com.twitter.sdk.android.tweetui.SearchTimeline;
@@ -46,11 +47,17 @@ public class TrendsOpenActivity extends AppCompatActivity {
         SearchTimeline searchTimeline = new SearchTimeline.Builder()
                 .query(str)
                 .build();
-        final TweetTimelineListAdapter adapter = new TweetTimelineListAdapter.Builder(this)
-                .setTimeline(searchTimeline)
-                .setTimelineFilter(timelineFilter)
-                .build();
-        listview.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
+        CustomAdapter.OnTweetClickListener listener=new CustomAdapter.OnTweetClickListener()
+        {
+            @Override
+            public void onTweetClicked(int position, Tweet tweet) {
+                Intent i=new Intent(TrendsOpenActivity.this,TweetView.class);
+                i.putExtra("id",tweet.id);
+                startActivity(i);
+            }
+        };
+        CustomAdapter adapteruse=new CustomAdapter(TrendsOpenActivity.this,searchTimeline,listener);
+        listview.setAdapter(adapteruse);
+        adapteruse.notifyDataSetChanged();
     }
 }

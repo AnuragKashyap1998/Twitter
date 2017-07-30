@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    xmlns:twittersdk="http://schemas.android.com/apk/res-auto"
+    tools:context="in.codingninjas.twitterdemo.TweetView"
+    tools:showIn="@layout/activity_tweet_view2">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/mylinearlayout">
+    </LinearLayout>
+
+</android.support.v4.widget.NestedScrollView>

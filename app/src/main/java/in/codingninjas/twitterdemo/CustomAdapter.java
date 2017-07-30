@@ -15,14 +15,6 @@ import com.twitter.sdk.android.tweetui.TweetView;
  */
 
 public class CustomAdapter extends TweetTimelineListAdapter {
-    /**
-     * Constructs a TweetTimelineListAdapter for the given Tweet Timeline.
-     *
-     * @param context  the context for row views.
-     * @param timeline a Timeline&lt;Tweet&gt; providing access to Tweet data items.
-     * @throws IllegalArgumentException if timeline is null
-     */
-
     Context mContext;
     OnTweetClickListener mListener;
 

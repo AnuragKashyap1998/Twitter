@@ -9,6 +9,7 @@ import com.twitter.sdk.android.core.AuthToken;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.OAuthSigning;
 import com.twitter.sdk.android.core.Result;
+import com.twitter.sdk.android.core.Session;
 import com.twitter.sdk.android.core.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.core.TwitterAuthToken;
@@ -16,6 +17,7 @@ import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.identity.TwitterLoginButton;
+import com.twitter.sdk.android.core.internal.network.OAuth1aInterceptor;
 
 import java.util.HashMap;
 
@@ -31,8 +33,9 @@ public class MainActivity extends AppCompatActivity {
     public final static String USER_ID = "user_id";
     public final static String SP_NAME = "twitter";
 
-    String token, tokenSecret, userName;
-    long userId;
+    static String token, tokenSecret, userName;
+    static long userId;
+    TwitterSession session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,9 +66,8 @@ public class MainActivity extends AppCompatActivity {
             public void success(Result<TwitterSession> result) {
 
                 // store all the data and start new activity
-                TwitterSession session = result.data;
+                session = result.data;
                 TwitterAuthToken authToken = session.getAuthToken();
-
                 SharedPreferences sp = getSharedPreferences(SP_NAME, MODE_PRIVATE);
                 SharedPreferences.Editor editor = sp.edit();
                 editor.putLong(USER_ID, session.getUserId());
@@ -83,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
 //            TwitterAuthConfig authConfig = TwitterCore.getInstance().getAuthConfig();
 //            TwitterAuthToken authToken = session.getAuthToken();
 //
@@ -96,12 +99,18 @@ public class MainActivity extends AppCompatActivity {
 //            String header = authSigning.getAuthorizationHeader("GET", "https://api.twitter.com/1.1/trends/place.json", params);
 
     }
-
+    public static OAuth1aInterceptor getInterceptor(){
+        TwitterAuthToken authToken = new TwitterAuthToken(token, tokenSecret);
+        TwitterSession session = new TwitterSession(authToken, userId, userName);
+        TwitterAuthConfig authConfig = TwitterCore.getInstance().getAuthConfig();
+        return new OAuth1aInterceptor(session, authConfig);
+    }
     private void startNewActivity() {
-        startActivity(new Intent(MainActivity.this, StartingActivity.class));
+        Intent intent=new Intent(MainActivity.this, Tabbed.class);
+        intent.putExtra("ID",userId);
+        startActivity(intent);
         finish();
     }
-
     private void setActiveSession() {
         TwitterAuthToken authToken = new TwitterAuthToken(token, tokenSecret);
         TwitterSession session = new TwitterSession(authToken, userId, userName);

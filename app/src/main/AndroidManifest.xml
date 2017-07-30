@@ -18,8 +18,26 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".StartingActivity"></activity>
-        <activity android:name=".TweetViewActivity"></activity>
+        <activity android:name=".TweetViewActivity" />
+        <activity
+            android:name=".Tabbed"
+            android:label="@string/title_activity_tabbed"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <receiver
+            android:name=".MyTweetReciever"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.twitter.sdk.android.tweetcomposer.UPLOAD_SUCCESS" />
+                <action android:name="com.twitter.sdk.android.tweetcomposer.UPLOAD_FAILURE" />
+            </intent-filter>
+        </receiver>
+
+        <activity
+            android:name=".TrendsOpenActivity"
+            android:label="@string/title_activity_trends_open"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

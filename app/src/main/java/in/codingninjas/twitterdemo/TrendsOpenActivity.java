@@ -58,6 +58,5 @@ public class TrendsOpenActivity extends AppCompatActivity {
         };
         CustomAdapter adapteruse=new CustomAdapter(TrendsOpenActivity.this,searchTimeline,listener);
         listview.setAdapter(adapteruse);
-        adapteruse.notifyDataSetChanged();
     }
 }

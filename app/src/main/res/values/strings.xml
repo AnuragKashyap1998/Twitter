@@ -102,6 +102,7 @@
     </string>
     <string name="title_activity_user_profile">UserProfile</string>
     <string name="title_activity_tweet_view">TweetView</string>
+    <string name="title_activity_followers_tweet">FollowersTweetActivity</string>
 
 
 </resources>

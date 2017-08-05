@@ -58,6 +58,11 @@
         <activity
             android:name=".TweetView"
             android:label="@string/title_activity_tweet_view"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".FollowersListActivity" />
+        <activity
+            android:name=".FollowersTweetActivity"
+            android:label="@string/title_activity_followers_tweet"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

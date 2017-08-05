@@ -15,6 +15,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 
 import android.support.v4.app.Fragment;
@@ -75,14 +76,16 @@ import static in.codingninjas.twitterdemo.R.id.container;
 public class Tabbed extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
-    private TabLayout tabLayout;
+    private  TabLayout tabLayout;
     private ViewPager mViewPager;
+    static CoordinatorLayout coordinatorLayout;
     static long id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.drawerlayout);
+        coordinatorLayout=(CoordinatorLayout) findViewById(R.id.main_content);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Intent i=getIntent();
@@ -159,9 +162,11 @@ public class Tabbed extends AppCompatActivity implements NavigationView.OnNaviga
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.followers) {
+            Intent i=new Intent(Tabbed.this,FollowersListActivity.class);
+            startActivity(i);
 
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.profile) {
             Intent i=new Intent(Tabbed.this,UserProfile.class);
             startActivity(i);
 
@@ -223,30 +228,25 @@ public class Tabbed extends AppCompatActivity implements NavigationView.OnNaviga
                 CustomAdapter adapteruse=new CustomAdapter(getContext(),userTimeline,listener);
 
                 listview.setAdapter(adapteruse);
-                adapteruse.notifyDataSetChanged();
 
                 return rootView;
 
             }
             else if (selectionNumber == 2) {
-                EditText editText=new EditText(getContext());
-                editText.setClickable(true);
-                Button button=new Button(getContext());
-                button.setClickable(true);
                 View rootView = inflater.inflate(R.layout.fragment_tabbed, container, false);
+
                 listview = (ListView) rootView.findViewById(R.id.list);
                 final List<String> handles = Arrays.asList("ericfrohnhoefer", "benward", "vam_si");
                 final FilterValues filterValues = new FilterValues(null, null, handles, null); // or load from JSON, XML, etc
                 final TimelineFilter timelineFilter = new BasicTimelineFilter(filterValues, Locale.ENGLISH);
                 SearchTimeline searchTimeline = new SearchTimeline.Builder()
-                        .query("twitterdev")
+                        .query("TwitterDev")
                         .build();
                 final TweetTimelineListAdapter adapter = new TweetTimelineListAdapter.Builder(getContext())
                         .setTimeline(searchTimeline)
                         .setTimelineFilter(timelineFilter)
                         .build();
                 listview.setAdapter(adapter);
-                adapter.notifyDataSetChanged();
                 return rootView;
             } else if (selectionNumber == 3) {
                 View rootView = inflater.inflate(R.layout.fragment_tabbed, container, false);
@@ -275,7 +275,6 @@ public class Tabbed extends AppCompatActivity implements NavigationView.OnNaviga
                         };
                         CustomAdapter adapteruse=new CustomAdapter(getContext(),homeTimeline,listener);
                         listview.setAdapter(adapteruse);
-                        adapteruse.notifyDataSetChanged();
                     }
 
                     @Override
@@ -287,6 +286,22 @@ public class Tabbed extends AppCompatActivity implements NavigationView.OnNaviga
 
             } else if (selectionNumber == 4) {
                 View rootView = inflater.inflate(R.layout.fragment_tabbed, container, false);
+                final SearchView searchView=(SearchView) coordinatorLayout.findViewById(R.id.searchView);
+                searchView.setVisibility(View.VISIBLE);
+                searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                    @Override
+                    public boolean onQueryTextSubmit(String query) {
+                        Intent i=new Intent(getContext(),TrendsOpenActivity.class);
+                        i.putExtra("Trendsclicked",query);
+                        startActivity(i);
+                        return true;
+                    }
+
+                    @Override
+                    public boolean onQueryTextChange(String newText) {
+                        return true;
+                    }
+                });
                 listview = (ListView) rootView.findViewById(R.id.list);
                 ApiInterface apiInterface =  ApiClient.getInstance();
                 Call<ArrayList<Home>> call  =  apiInterface.getUserTrends("1");
@@ -305,7 +320,6 @@ public class Tabbed extends AppCompatActivity implements NavigationView.OnNaviga
 
                         ArrayAdapter<String> adapter=new ArrayAdapter<>(getContext().getApplicationContext(),R.layout.usedfortrends,list);
                         listview.setAdapter(adapter);
-                        adapter.notifyDataSetChanged();
                     }
 
                     @Override

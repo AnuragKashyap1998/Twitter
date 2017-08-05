@@ -24,5 +24,7 @@ public interface ApiInterface {
     Call<ArrayList<Home>> getUserTrends(@Query("id") String id);
     @GET("users/show.json")
     Call<Profile> getUserProfile(@Query("screen_name") String screen_name);
+    @GET("followers/list.json")
+    Call<Followers> getFollowersList(@Query("screen_name") String screen_name);
 }
 //user_id=2956103107

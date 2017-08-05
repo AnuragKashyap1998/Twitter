@@ -8,6 +8,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="in.codingninjas.twitterdemo.Tabbed$PlaceholderFragment">
 
+
     <TextView android:id="@+id/empty"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
